@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Notes</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:680px;margin:40px auto;padding:0 20px;color:#333}
+h1{font-weight:300;font-size:2rem;border-bottom:1px solid #eee;padding-bottom:10px}
+.note{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:16px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.note h3{margin:0 0 6px;font-size:1rem}
+.note p{margin:0;color:#666;font-size:.92rem}
+input,textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin:6px 0;box-sizing:border-box}
+button{background:#0066ff;color:#fff;border:none;padding:10px 18px;border-radius:6px;cursor:pointer}
+button:hover{background:#0052cc}
+.footer{margin-top:40px;font-size:.8rem;color:#999;text-align:center}
+</style>
+</head>
+<body>
+<h1>My Notes</h1>
+<div id="notes"></div>
+<div style="margin-top:24px">
+  <input id="title" placeholder="Title">
+  <textarea id="content" rows="3" placeholder="Take a note..."></textarea>
+  <button onclick="addNote()">Add Note</button>
+</div>
+<div class="footer">Simple personal notes · <span id="year"></span></div>
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+let notes=[{title:'Welcome',body:'This is a simple note app.'}];
+function render(){document.getElementById('notes').innerHTML=notes.map((n,i)=>\`<div class=note><h3>\${n.title}</h3><p>\${n.body}</p></div>\`).join('');}
+function addNote(){const t=document.getElementById('title').value;const b=document.getElementById('content').value;if(t&&b){notes.push({title:t,body:b});document.getElementById('title').value='';document.getElementById('content').value='';render();}}
+render();
+</script>
+</body>
+</html>
