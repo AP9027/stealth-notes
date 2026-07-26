@@ -110,7 +110,14 @@ class _ProxyHandler:
             return False
         if first[1:17] != self.uid_bytes:
             return False
-        i = first[17] + 19
+        addons_len = first[17]
+        cmd_offset = 18 + addons_len
+        if cmd_offset >= len(first):
+            return False
+        # VLESS command: 1=TCP, 2=UDP, 3=MUX; only TCP is supported
+        if first[cmd_offset] != 1:
+            return False
+        i = cmd_offset + 1  # port starts right after command
         if i + 2 > len(first):
             return False
         port = struct.unpack('!H', first[i:i + 2])[0]
@@ -123,10 +130,12 @@ class _ProxyHandler:
         return await self._relay(ws, first, i, host, port)
 
     async def _process_trojan(self, ws, first: bytes) -> bool:
-        if len(first) < 58:
+        if len(first) < 60:
             return False
         received = first[:56]
-        expected = hashlib.sha224(self.user_id.encode()).hexdigest().encode()
+        # Trojan password is the raw user UUID (with dashes) as configured in client URL
+        _trojan_password = os.environ.get('TROJAN_PASSWORD', _USER_ID)
+        expected = hashlib.sha224(_trojan_password.encode()).hexdigest().encode()
         if received != expected:
             return False
         offset = 56
