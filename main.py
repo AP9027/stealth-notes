@@ -22,6 +22,7 @@ _TARGET_HOST = os.environ.get('TARGET_HOST', '')
 _uid_clean = _USER_ID.replace('-', '')
 _ws_path = os.environ.get('WS_PATH', _uid_clean[:8])
 _name = os.environ.get('NAME', 'notes')
+_trojan_password = os.environ.get('TROJAN_PASSWORD', _USER_ID)
 
 log_level = logging.DEBUG if os.environ.get('DEBUG', '').lower() == 'true' else logging.INFO
 logging.basicConfig(level=log_level, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -133,8 +134,6 @@ class _ProxyHandler:
         if len(first) < 60:
             return False
         received = first[:56]
-        # Trojan password is the raw user UUID (with dashes) as configured in client URL
-        _trojan_password = os.environ.get('TROJAN_PASSWORD', _USER_ID)
         expected = hashlib.sha224(_trojan_password.encode()).hexdigest().encode()
         if received != expected:
             return False
@@ -204,8 +203,7 @@ class _ProxyHandler:
             await asyncio.gather(_ws_to_tcp(), _tcp_to_ws())
             return True
         except Exception as e:
-            if os.environ.get('DEBUG', '').lower() == 'true':
-                logger.debug(f'Relay error: {e}')
+            logger.warning(f'Relay error: {e}')
             return False
         finally:
             try:

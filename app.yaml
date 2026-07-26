@@ -1,5 +1,5 @@
-kind: wasmer.io/App.v0
 name: stealth-notes
+app_id: da_nkPI5tJUkVMM
 owner: xjuan1216
 package: .
 env:
@@ -8,7 +8,7 @@ env:
   WS_PATH: ab12cd34
   NAME: notes
   PORT: '3000'
-app_id: da_nkPI5tJUkVMM
+kind: wasmer.io/App.v0
 annotations:
   shipitcli.com/config:
     cross_platform: wasix_wasm32
