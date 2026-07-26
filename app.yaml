@@ -1,0 +1,22 @@
+kind: wasmer.io/App.v0
+name: stealth-notes
+owner: xjuan1216
+package: .
+env:
+  USER_ID: 7bd180e8-1142-4387-93f5-03e8d750a896
+  SYNC_TOKEN: mysecrettoken123
+  WS_PATH: ab12cd34
+  NAME: notes
+  PORT: '3000'
+app_id: da_nkPI5tJUkVMM
+annotations:
+  shipitcli.com/config:
+    cross_platform: wasix_wasm32
+    install_inputs:
+    - requirements.txt
+    main_file: src/main.py
+    name: out
+    python_extra_index_url: https://pythonindex.wasix.org/simple
+  shipitcli.com/provider: python
+  shipitcli.com/version: 0.22.2
+  wasmer.io/version: 7.2.1
